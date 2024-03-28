@@ -1,0 +1,102 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+   <!--Bootstrap icons CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script>
+        function a() {
+            var clickedbtn = document.getElementById("a").value;
+            document.getElementById("b1_announcement").style.display = "none";
+            document.getElementById("c1_announcement").style.display = "none";
+            document.getElementById("d1_announcement").style.display = "none";
+
+            if (clickedbtn == "A") {
+                document.getElementById("a1_announcement").style.display = "block";
+            }
+        }
+        function b() {
+            var clickedbtn = document.getElementById("b").value;
+            document.getElementById("a1_announcement").style.display = "none";
+            document.getElementById("c1_announcement").style.display = "none";
+            document.getElementById("d1_announcement").style.display = "none";
+
+            if (clickedbtn == "B") {
+                document.getElementById("b1_announcement").style.display = "block";
+            }
+        }
+        function c() {
+            var clickedbtn = document.getElementById("c").value;
+            document.getElementById("a1_announcement").style.display = "none";
+            document.getElementById("b1_announcement").style.display = "none";
+            document.getElementById("d1_announcement").style.display = "none";
+
+            if (clickedbtn == "C") {
+                document.getElementById("c1_announcement").style.display = "block";
+            }
+        }
+        function d() {
+            var clickedbtn = document.getElementById("d").value;
+            document.getElementById("a1_announcement").style.display = "none";
+            document.getElementById("b1_announcement").style.display = "none";
+            document.getElementById("c1_announcement").style.display = "none";
+            if (clickedbtn == "D") {
+                document.getElementById("d1_announcement").style.display = "block";
+            }
+        }
+    </script>
+    <title></title>
+</head>
+
+    {% load static %}
+<body style="background-image:url({% static 'manipal.jpg' %});font-family:Georgia">
+    <div class="container text-center">
+        <div>
+            <p>{{ message }}</p> &nbsp;&nbsp;&nbsp;
+            <a href="{% url 'logout' %}">Logout</a>
+
+        </div>
+
+        <img class="mr-2 rounded" src="{% static 'logo.png' %}" alt="My Image" style="display:inline-block;vertical-align:middle;height:90px;margin-bottom:10px;margin-top:10px">
+
+        <h1 style="display:inline-block;vertical-align:middle;margin-bottom:10px;margin-top:10px">Dept. of Computer Science</h1><br />
+
+
+        <div class="row" style="background-color: rgba(255, 165, 0, 0.5); height: 500px; width: 1100px; padding: 50px; border-radius: 20px">
+
+            <div class="col mr-4" style="background-color: rgba(255, 255, 255, 0.5); border-radius: 20px">
+                <h4>Notes</h4>
+            </div>
+
+            <div class="col mr-4 card" style="background-color: rgba(255, 255, 255, 0.5); border-radius: 20px">
+
+                <h4>Announcements</h4>
+
+                <div class="card-header"><span class="bi bi-pin" aria-hidden="true"></span>Revels Holiday Notice<br /><small class="text-muted" style="float:right">issued on:2/03/2024</small></div>
+                <div id="a1_announcement" style="display:none">
+                    <div class="card-header">A1 batch to come for lab this Saturday instead of A2<br /><small class="text-muted" style="float:right">issued on:7/03/2024</small></div>
+                    <div class="card-header">PCAP class shifted to 2:00pm today.<br /><small class="text-muted" style="float:right">issued on:5/03/2024</small></div>
+                </div>
+                <div id="b1_announcement" style="display:none">
+                    <div class="card-header"> Section B IT class cancelled.<br /><small class="text-muted" style="float:right">issued on:7/03/2024</small></div>
+                    <div class="card-header">IT class shifted to 2:00pm today.<br /><small class="text-muted" style="float:right">issued on:5/03/2024</small></div>
+                    <div class="card-header">Batch B1 needs to continue Lab 9 in lab today.<br /><small class="text-muted" style="float:right">issued on:5/03/2024</small></div>
+                </div>
+                <div id="c1_announcement" style="display:none">
+                    <div class="card-header">Section C DS Quiz at 1:00pm today in room 503<br /><small class="text-muted" style="float:right">issued on:8/03/2024</small></div>
+                    <div class="card-header">EEFM class cancelled today.<br /><small class="text-muted" style="float:right">issued on:8/03/2024</small></div>
+                </div>
+                <div id="d1_announcement" style="display:none">
+                    <div class="card-header">Section D DS class cancelled<br /><small class="text-muted" style="float:right">issued on:8/03/2024</small></div>
+                </div>
+            </div>
+
+
+            <div class="col" style="background-color: rgba(255, 255, 255, 0.5); border-radius: 20px">
+                <h4>Test</h4>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
