@@ -5,5 +5,6 @@ class User(models.Model):
     username = models.IntegerField(primary_key = True)
     password = models.CharField(max_length = 100)
     user = models.CharField(max_length = 100,choices=CHOICES)
-
-
+class Announcements(models.Model):
+    announcement = models.CharField(max_length=500)
+    date = models.DateField()

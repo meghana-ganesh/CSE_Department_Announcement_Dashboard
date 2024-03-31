@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render,HttpResponse
-from .forms import LoginForm
-from .models import User
+from .forms import LoginForm,AnnouncementsForm
+from .models import User,Announcements
 
 # Create your views here.
 def index(request):
@@ -11,6 +11,7 @@ def index(request):
     if username:
         message = f"Username: {username} User Type: {user}"
         context['message']= message
+        context['announcements'] = Announcements.objects.all().order_by('-date')
         return render(request,'index.html',context)
     else:
         context['message']= "Not logged in"
@@ -44,7 +45,7 @@ def validateLogin(request):
                 context['message'] = f"Login Successful, Welcome {username} as {user}"
                 request.session['username'] = username
                 request.session['user'] = user
-                return render(request,'index.html',context)
+                return redirect('/index/')
             else:
                 context['message'] = "Invalid Credentials"
                 return render(request,'login.html',context)
@@ -62,5 +63,19 @@ def logout(request):
         return redirect('/',context)
     context['message'] = "Not Logged In"
     return redirect('/',context)
-            
+def announcementsForm(request):
+    return render(request,'announcementsForm.html',{'announcementsForm':AnnouncementsForm})
+def addAnnouncements(request):
+    if request.method == "POST":
+        form = AnnouncementsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            a_obj = Announcements.objects.all().order_by('-date')
+            return render(request,'index.html',{'announcements':a_obj})
+    return redirect('/announcementsForm/')
+def deleteAnnouncement(request,id):
+    announcement = Announcements.objects.get(id=id)
+    announcement.delete()
+    return redirect('/index/')
+    
 

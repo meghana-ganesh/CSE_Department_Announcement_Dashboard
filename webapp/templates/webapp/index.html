@@ -20,6 +20,7 @@
             var user = '{{ request.session.user }}';
             console.log(user);
             if (user === "teacher") {
+                
                 document.getElementById('teacher_notes').style.display = "inline-block";
                 document.getElementById('teacher_announcement').style.display = "inline-block";
             }
@@ -27,6 +28,10 @@
         window.onload = function () {
             StudentNotes();
             TeacherNotes();
+            var message = '{{ message }}';
+            if (message === '') {
+                document.getElementById('notif').style.display = 'none';
+            }
         };
     </script>
     <title></title>
@@ -37,7 +42,7 @@
     <div class="container text-center">
         <div class=" justify-content-center" style="padding-top:10px">
             <br />
-            <span class="notification" style="background-color: rgba(0, 64, 153, 0.5); padding: 15px; border-radius: 5px; position: relative;">
+            <span id="notif" class="notification" style="background-color: rgba(0, 64, 153, 0.5); padding: 15px; border-radius: 5px; position: relative;">
                 <p style="display: inline-block; margin: 0; padding-right: 10px">{{ message }}</p>
                 <span class="close-btn" style="cursor: pointer; color: white; font-size: 18px; position: absolute; top: 5px; right: 5px;" onclick="this.parentElement.style.display='none'">&times;</span>
             </span>
@@ -64,45 +69,11 @@
             <div class="col mr-4" style="background-color: rgba(255, 255, 255, 0.5); border-radius: 20px;height:400px;overflow-y: auto;">
                 <h4>Notes</h4>
                 <div id="student_notes" style="display:none">
-                    <div class="card-header">
-                        <a href="DSslides.html">DS Module 4 Slides</a><br />
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                    </div><br>
-                    <div class="card-header">
-                        <a href="itl_template.html">ITL Mini Project Template</a><br />
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                    </div><br>
-                    <div class="card-header">
-                        <a href="eefm_notes.html">EEFM revision Notes</a><br />
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                    </div><br>
-                    <div class="card-header">
-                        <a href="pcap_tiling.html">PCAP Tiling pdf</a><br />
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                    </div><br>
+                    
                 </div>
 
                 <div id="teacher_notes" style="display:none">
-                    <div class="card-header">
-                        <a href="DSslides.html">DS Module 4 Slides</a><br />
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                        <button class="btn btn-primary" style="float:right">Edit</button><br /><br />
-                    </div><br>
-                    <div class="card-header">
-                        <a href="itl_template.html">ITL Mini Project Template</a><br />
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                        <button class="btn btn-primary" style="float:right">Edit</button><br /><br />
-                    </div><br>
-                    <div class="card-header">
-                        <a href="eefm_notes.html">EEFM revision Notes</a><br />
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                        <button class="btn btn-primary" style="float:right">Edit</button><br /><br />
-                    </div><br>
-                    <div class="card-header">
-                        <a href="pcap_tiling.html">PCAP Tiling pdf</a><br />
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                        <button class="btn btn-primary" style="float:right">Edit</button><br /><br />
-                    </div><br>
+                    
                 </div>
             </div>
 
@@ -110,48 +81,26 @@
 
                 <h4>Announcements</h4>
                 <div id="student_announcement" style="display:none">
-                <div class="card-header">
-                    <span class="bi bi-pin" aria-hidden="true">
-                     </span>Revels Holiday Notice<br />
-                    <small class="text-muted" style="float:right">issued on:2/03/2024</small><br />
-                </div>
-                    <div class="card-header">
-                        <p>PCAP A1 lab endsem on 11/04/2024</p>
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                    </div><br>
-                    <div class="card-header">
-                        <p>Good Friday Holiday on 29/03/2024</p>
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                    </div><br>
-                    <div class="card-header">
-                        <p>Please Register for Exam Hall Ticket here <a href="">Click here</a></p>
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                    </div><br>
+                    {% for announcement in announcements %}
+                    {{ announcement.announcement }}<br />
+                    <small class="text-muted" style="float:right">issued on:{{ announcement.date }}</small>
+                    <hr />
+                    {% endfor %}
                 </div>
 
                 <div id="teacher_announcement" style="display:none">
-                    <div class="card-header">
-                        <span class="bi bi-pin" aria-hidden="true">
-                        </span>Revels Holiday Notice<br />
-                        <small class="text-muted" style="float:right">issued on:2/03/2024</small><br />
-                        <button class="btn btn-primary" style="float:right">Edit</button><br /><br />
+                    <div>
+                        {% for announcement in announcements %}
+                        <div style="position: relative;">
+                            {{ announcement.announcement }}<br />
+                            <small class="text-muted" style="float:right">issued on:{{ announcement.date }}</small><br /><br /><br /><br />
+                            <button class="btn btn-dark" style="position: absolute; bottom: 0; right: 0;"><a href="/deleteAnnouncement/{{ announcement.id }}" style="color:white">Delete</a></button>
+                        </div>
+                        <hr />
+                        {% endfor %}
                     </div>
-                    <div class="card-header">
-                        <p>PCAP A1 lab endsem on 11/04/2024</p>
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                        <button class="btn btn-primary" style="float:right">Edit</button><br /><br />
-                    </div><br>
-                    <div class="card-header">
-                        <p>Good Friday Holiday on 29/03/2024</p>
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                        <button class="btn btn-primary" style="float:right">Edit</button><br /><br />
-                    </div><br>
-                    <div class="card-header">
-                        <p>Please Register for Exam Hall Ticket here <a href="">Click here</a></p>
-                        <small class="text-muted" style="float:right">issued on:7/03/2024</small><br />
-                        <button class="btn btn-primary" style="float:right">Edit</button><br /><br />
-                    </div><br>
-                </div>
+                    <button class="btn btn-primary"><a href="/announcementsForm/" style="color:white;">Add Announcement</a></button>
+                </div><br />
             </div>
 
 
