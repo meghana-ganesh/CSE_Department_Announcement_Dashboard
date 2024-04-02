@@ -13,6 +13,7 @@
             if (user === "student") {
                 document.getElementById('student_notes').style.display = "inline-block";
                 document.getElementById('student_announcement').style.display = "inline-block";
+                document.getElementById('student_marks').style.display = "inline-block";
 
             }
         }
@@ -23,6 +24,8 @@
                 
                 document.getElementById('teacher_notes').style.display = "inline-block";
                 document.getElementById('teacher_announcement').style.display = "inline-block";
+                document.getElementById('teacher_marks').style.display = "inline-block";
+
             }
         }
         window.onload = function () {
@@ -73,8 +76,17 @@
                 </div>
 
                 <div id="teacher_notes" style="display:none">
-                    
-                </div>
+                    <div>
+                        {% for note in notes %}
+                        <div style="position: relative;">
+                            <a href="/{{ note.document.name }}"">{{ note.title }}</a><br />
+                            <small class="text-muted" style="float:right">issued on:{{ note.date }}</small><br /><br /><br /><br />
+                        </div>
+                        <hr />
+                        {% endfor %}
+                    </div>
+                    <button class="btn btn-primary"><a href="/documentForm/" style="color:white;">Add Notes</a></button>
+                </div><br />
             </div>
 
             <div class="col mr-4 card" style="background-color: rgba(255, 255, 255, 0.5); border-radius: 20px; height: 400px; overflow-y: auto;">
@@ -106,6 +118,24 @@
 
             <div class="col" style="background-color: rgba(255, 255, 255, 0.5); border-radius: 20px; height: 400px; overflow-y: auto;">
                 <h4>Test Marks</h4>
+                <div id="student_marks" style="display:none">
+                    {% for unique_subject in unique_subjects %}
+                    <a href="/studentmarks_result/"> {{ unique_subject.subject }} </a><br />
+                    <hr />
+                    {% endfor %}
+                </div>
+
+                <div id="teacher_marks" style="display:none">
+                    <div>
+                        {% for unique_subject in unique_subjects %}
+                        <div style="position: relative;">
+                            <a href="/teachermarks_result/{{ unique_subject.subject }}/">{{ unique_subject.subject }}</a><br />
+                        </div>
+                        <hr />
+                        {% endfor %}
+                    </div>
+                    <button class="btn btn-primary"><a href="/marksForm/" style="color:white;">Add Marks</a></button>
+                </div><br />
             </div>
         </div>
     </div>

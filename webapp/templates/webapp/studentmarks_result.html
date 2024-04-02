@@ -9,18 +9,26 @@
     <meta charset="utf-8" />
     <title></title>
 </head>
-    {% load static %}
+{% load static %}
 <body style="background-image:url({% static 'manipal.jpg' %});font-family:Georgia">
-    <div class="container-fluid mt-5" style="background-color: rgba(255, 165, 0, 0.5); border-radius: 20px; padding: 35px;text-align:center;height:300px;width:400px">
-        <div class="form-group">
+    <div class="container-fluid">
+        <table class="table table-dark table-striped table-hover mt-4">
+            <thead style="background-color: rgba(255, 165, 0, 0.5); border-radius: 20px;" ">
+            <td>Registration Number</td>
+            <td>Marks</td>
+            <td>Test Name</td>
+            </thead>
+            {% for mark in marks %}
+            <tr>
+                <td>{{ mark.student_regno.username }}</td>
+                <td>{{ mark.marks }}</td>
+                <td>{{ mark.test_name }}</td>
+            </tr>
 
-        <form action="{% url 'addAnnouncements' %}" method="POST">
-            {% csrf_token %}
-            {{ announcementsForm.as_p }}
-            <button class="btn btn-warning" type="submit">Submit</button>
-        </form>
-        </div>
+            {% endfor %}
+        </table>
     </div>
-    
+
+
 </body>
 </html>
