@@ -80,7 +80,7 @@ def addAnnouncements(request):
             form.save()
             a_obj = Announcements.objects.all().order_by('-date')
             m_obj = Marks.objects.all().order_by('-date')
-            return render(request,'index.html',{'announcements':a_obj,'marks':m_obj})
+            return redirect('/index/')
     return redirect('/announcementsForm/')
 
 def deleteAnnouncement(request,id):
@@ -101,9 +101,28 @@ def addMarks(request):
             return redirect('/index/')
     return redirect('/marksForm/')
 
-def studentmarksResult(request):
-    m_obj = Marks.objects.all().order_by('-date')
-    return render(request,'studentmarks_result.html',{'marks':m_obj})
+def studentmarksResult(request,subject):
+    test_name = request.GET.get('test_name')
+    sort_order = request.GET.get('sort')
+    marks_query = Marks.objects.all()
+    student_regno = request.session.get('username')
+    marks_query = marks_query.filter(subject=subject,student_regno=student_regno)
+    # Filter by test name
+    # Apply sorting if test name is provided
+    if test_name:
+        marks_query = marks_query.filter(test_name=test_name)
+    # If test name is not provided, sort all records for the subject
+    else:
+        if sort_order == 'asc':
+            marks_query = marks_query.order_by('test_name', 'marks')
+        elif sort_order == 'desc':
+            marks_query = marks_query.order_by('test_name', '-marks')
+    unique_tests = Marks.objects.values('test_name').annotate(count=Count('test_name'))
+    context =  {}
+    context['unique_tests'] = unique_tests
+    context['marks'] = marks_query
+    context['subject'] = subject
+    return render(request,'studentmarks_result.html',context)
 
 def teachermarksResult(request,subject):
     test_name = request.GET.get('test_name')
@@ -146,5 +165,9 @@ def addNotes(request):
         else:
             print(form.errors) 
     return redirect('/documentForm/')
+def deleteNote(request,id):
+    note = Note.objects.get(id=id)
+    note.delete()
+    return redirect('/index/')
 
 

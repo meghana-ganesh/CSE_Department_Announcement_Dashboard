@@ -10,8 +10,9 @@ urlpatterns =[
     path('deleteAnnouncement/<int:id>',views.deleteAnnouncement,name='deleteAnnouncement'),
     path('marksForm/',views.marksForm,name='marksForm'),
     path('addMarks/',views.addMarks,name='addMarks'),
-    path('studentmarks_result/',views.studentmarksResult,name='studentmarksResult'),
+    path('studentmarks_result/<str:subject>/',views.studentmarksResult,name='studentmarksResult'),
     path('teachermarks_result/<str:subject>/',views.teachermarksResult,name='teachermarksResult'),
     path('documentForm/',views.documentForm,name='documentForm'),
     path('addNotes/',views.addNotes,name='addNotes'),
+    path('deleteNote/<int:id>/',views.deleteNote,name='deleteNote'),
     ]

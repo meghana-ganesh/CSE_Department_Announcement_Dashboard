@@ -72,20 +72,34 @@
             <div class="col mr-4" style="background-color: rgba(255, 255, 255, 0.5); border-radius: 20px;height:400px;overflow-y: auto;">
                 <h4>Notes</h4>
                 <div id="student_notes" style="display:none">
-                    
-                </div>
-
-                <div id="teacher_notes" style="display:none">
-                    <div>
+                    <div style="position:relative">
                         {% for note in notes %}
                         <div style="position: relative;">
-                            <a href="/{{ note.document.name }}"">{{ note.title }}</a><br />
-                            <small class="text-muted" style="float:right">issued on:{{ note.date }}</small><br /><br /><br /><br />
+                            {{ note.title }}<br />
+                            <small class="text-muted" style="float:right">issued on:{{ note.date }}</small><br /><br />
+                            <button type="submit" class="btn btn-primary" style="position: absolute; bottom: 0; right: 0;"><a href="/{{ note.document.name }}" style="color:white">Download</a></button> <br />
                         </div>
                         <hr />
                         {% endfor %}
                     </div>
-                    <button class="btn btn-primary"><a href="/documentForm/" style="color:white;">Add Notes</a></button>
+                </div>
+
+                <div id="teacher_notes" style="display:none">
+                    <div style="position:relative">
+                        {% for note in notes %}
+                        <div style="position: relative;">
+                            {{ note.title }}<br />
+                            <small class="text-muted" style="float:right">issued on:{{ note.date }}</small><br /><br /><br />
+                            <div class="d-flex" style="position: absolute; bottom: 0; right: 0;">
+                                <button type="submit" class="btn btn-primary mr-2" ><a href="/{{ note.document.name }}" style="color:white">Download</a></button>
+                                <button class="btn btn-dark" ><a href="/deleteNote/{{ note.id }}" style="color:white">Delete</a></button>
+                            </div>
+                            
+                        </div>
+                        <hr />
+                        {% endfor %}
+                    </div>
+                    <button class="btn btn-primary"><a href="/documentForm/" style="color:white;">Add Notes</a></button><br /><br />
                 </div><br />
             </div>
 
@@ -100,10 +114,10 @@
                     {% endfor %}
                 </div>
 
-                <div id="teacher_announcement" style="display:none">
+                <div id="teacher_announcement" style="display:none;">
                     <div>
                         {% for announcement in announcements %}
-                        <div style="position: relative;">
+                        <div style="position: relative; ">
                             {{ announcement.announcement }}<br />
                             <small class="text-muted" style="float:right">issued on:{{ announcement.date }}</small><br /><br /><br /><br />
                             <button class="btn btn-dark" style="position: absolute; bottom: 0; right: 0;"><a href="/deleteAnnouncement/{{ announcement.id }}" style="color:white">Delete</a></button>
@@ -120,7 +134,7 @@
                 <h4>Test Marks</h4>
                 <div id="student_marks" style="display:none">
                     {% for unique_subject in unique_subjects %}
-                    <a href="/studentmarks_result/"> {{ unique_subject.subject }} </a><br />
+                    <a href="/studentmarks_result/{{ unique_subject.subject }}"> {{ unique_subject.subject }} </a><br />
                     <hr />
                     {% endfor %}
                 </div>
@@ -130,6 +144,7 @@
                         {% for unique_subject in unique_subjects %}
                         <div style="position: relative;">
                             <a href="/teachermarks_result/{{ unique_subject.subject }}/">{{ unique_subject.subject }}</a><br />
+
                         </div>
                         <hr />
                         {% endfor %}

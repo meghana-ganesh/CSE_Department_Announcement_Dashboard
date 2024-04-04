@@ -13,20 +13,24 @@
 <body style="background-image:url({% static 'manipal.jpg' %});font-family:Georgia">
     <div class="container-fluid">
         <!-- Form for filtering marks -->
-        <form action="/teachermarks_result/{{ subject }}/" method="GET">
-            <label for="test_name">Filter by Test Name:</label>
-            <select name="test_name" id="test_name">
-                <option value="">All Tests</option>
-                {% for test in unique_tests %}
-                {% if test.test_name == request.GET.test_name %}
-                <option value="{{ test.test_name }}" selected>{{ test.test_name }}</option>
-                {% else %}
-                <option value="{{ test.test_name }}">{{ test.test_name }}</option>
-                {% endif %}
-                {% endfor %}
-            </select><br />
-            <input type="submit" value="Filter" class="btn btn-warning"><br />
-        </form>
+        <div class="d-flex" style="padding-top:10px">
+            <form action="/teachermarks_result/{{ subject }}/" method="GET" class="mr-2">
+                <label for="test_name">Filter by Test Name:</label>
+                <select name="test_name" id="test_name">
+                    <option value="">All Tests</option>
+                    {% for test in unique_tests %}
+                    {% if test.test_name == request.GET.test_name %}
+                    <option value="{{ test.test_name }}" selected>{{ test.test_name }}</option>
+                    {% else %}
+                    <option value="{{ test.test_name }}">{{ test.test_name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select><br />
+                <input type="submit" value="Filter" class="btn btn-warning"><br />
+            </form>
+            <button type="submit" class="btn btn-primary" style="height:40px;position:absolute;top:10px;left:1100px"><a href="/index/" style="color:white">Home</a></button>
+        </div>
+        
 
         <!-- Links for sorting marks -->
         <a href="/teachermarks_result/{{ subject }}/?sort=asc">Sort by Marks (Lowest to Highest)</a><br />
