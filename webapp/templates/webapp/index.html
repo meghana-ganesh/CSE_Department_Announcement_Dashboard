@@ -88,7 +88,7 @@
                     <div style="position:relative">
                         {% for note in notes %}
                         <div style="position: relative;">
-                            {{ note.title }}<br />
+                            <a href="/view-pdf/" target="_blank">{{ note.title }}<br /></a>
                             <small class="text-muted" style="float:right">issued on:{{ note.date }}</small><br /><br /><br />
                             <div class="d-flex" style="position: absolute; bottom: 0; right: 0;">
                                 <button type="submit" class="btn btn-primary mr-2" ><a href="/{{ note.document.name }}" style="color:white">Download</a></button>

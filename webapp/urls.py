@@ -15,4 +15,5 @@ urlpatterns =[
     path('documentForm/',views.documentForm,name='documentForm'),
     path('addNotes/',views.addNotes,name='addNotes'),
     path('deleteNote/<int:id>/',views.deleteNote,name='deleteNote'),
+    path('view-pdf/',views.pdf_view,name='pdf_view'),
     ]

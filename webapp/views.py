@@ -1,4 +1,5 @@
-import re
+import os
+from django.conf import settings
 from django.shortcuts import redirect, render,HttpResponse
 from django.urls import is_valid_path
 from .forms import LoginForm,AnnouncementsForm,MarksForm,NotesForm
@@ -169,5 +170,24 @@ def deleteNote(request,id):
     note = Note.objects.get(id=id)
     note.delete()
     return redirect('/index/')
+def pdf_view(request):
+    notes = Note.objects.all().order_by('-date')
+
+    # Iterate through each note to get its document path
+    for note in notes:
+        document_path = os.path.join(settings.MEDIA_ROOT, str(note.document.name))
+        
+        # Check if the document path exists
+        if os.path.exists(document_path):
+            print('yes')
+            with open(document_path, 'rb') as pdf:
+                pdf_content = pdf.read()
+            # Create the HttpResponse with PDF content
+            response = HttpResponse(pdf_content, content_type='application/pdf')
+            response['Content-Disposition'] = f'inline; filename="{os.path.basename(document_path)}"'
+            return response
+    
+    # If none of the documents are found
+    return HttpResponse("Document not found", status=404)
 
 
