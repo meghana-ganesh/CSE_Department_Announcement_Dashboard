@@ -15,5 +15,7 @@ urlpatterns =[
     path('documentForm/',views.documentForm,name='documentForm'),
     path('addNotes/',views.addNotes,name='addNotes'),
     path('deleteNote/<int:id>/',views.deleteNote,name='deleteNote'),
-    path('view-pdf/',views.pdf_view,name='pdf_view'),
+    path('view_pdf/<str:pdf_path>/',views.view_pdf,name='view_pdf'),
+    path('editMarks/<str:id>/',views.editMarks,name='editMarks'),
+    path('deleteMarks/<str:id>/',views.deleteMarks,name='deleteMarks')
     ]

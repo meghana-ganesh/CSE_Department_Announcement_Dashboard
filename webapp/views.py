@@ -1,7 +1,6 @@
 import os
 from django.conf import settings
 from django.shortcuts import redirect, render,HttpResponse
-from django.urls import is_valid_path
 from .forms import LoginForm,AnnouncementsForm,MarksForm,NotesForm
 from .models import User,Announcements,Marks,Note
 from django.db.models import Count
@@ -13,8 +12,8 @@ def index(request):
     context = {}
     context['userForm'] = LoginForm()
     if username:
-        message = f"Username: {username} User Type: {user}"
-        context['message']= message
+        context['username']= username
+        context['userType'] = user
         context['announcements'] = Announcements.objects.all().order_by('-date')
         unique_subjects = Marks.objects.values('subject').annotate(count=Count('subject'))
         context['notes'] = Note.objects.all().order_by('-date')
@@ -115,9 +114,9 @@ def studentmarksResult(request,subject):
     # If test name is not provided, sort all records for the subject
     else:
         if sort_order == 'asc':
-            marks_query = marks_query.order_by('test_name', 'marks')
+            marks_query = marks_query.order_by('marks')
         elif sort_order == 'desc':
-            marks_query = marks_query.order_by('test_name', '-marks')
+            marks_query = marks_query.order_by('-marks')
     unique_tests = Marks.objects.values('test_name').annotate(count=Count('test_name'))
     context =  {}
     context['unique_tests'] = unique_tests
@@ -137,15 +136,58 @@ def teachermarksResult(request,subject):
     # If test name is not provided, sort all records for the subject
     else:
         if sort_order == 'asc':
-            marks_query = marks_query.order_by('test_name', 'marks')
+            marks_query = marks_query.order_by('marks')
         elif sort_order == 'desc':
-            marks_query = marks_query.order_by('test_name', '-marks')
+            marks_query = marks_query.order_by('-marks')
     unique_tests = Marks.objects.values('test_name').annotate(count=Count('test_name'))
     context =  {}
     context['unique_tests'] = unique_tests
     context['marks'] = marks_query
     context['subject'] = subject
     return render(request,'teachermarks_result.html',context)
+
+def editMarks(request,id):
+    markID = ""
+    url = "/"
+    br = False
+    for char in id:
+        if char.isdigit():
+            markID += char
+        else:
+            if char.isupper():
+                if(not br):
+                    url += '/'
+                    br = True
+                url += char
+            else:
+                url += char
+
+    markID = int(markID)
+    marks = Marks.objects.get(id=markID)
+    marks.marks = request.POST.get('marks')
+    marks.save()
+    return redirect(url)
+
+def deleteMarks(request,id):
+    markID = ""
+    url = "/"
+    br = False
+    for char in id:
+        if char.isdigit():
+            markID += char
+        else:
+            if char.isupper():
+                if(not br):
+                    url += '/'
+                    br = True
+                url += char
+            else:
+                url += char
+
+    markID = int(markID)
+    marks = Marks.objects.get(id=markID)
+    marks.delete()
+    return redirect(url)
 
 def documentForm(request):
     return render(request,'documentForm.html',{'notesForm':NotesForm})
@@ -166,28 +208,22 @@ def addNotes(request):
         else:
             print(form.errors) 
     return redirect('/documentForm/')
+
 def deleteNote(request,id):
     note = Note.objects.get(id=id)
     note.delete()
     return redirect('/index/')
-def pdf_view(request):
-    notes = Note.objects.all().order_by('-date')
 
-    # Iterate through each note to get its document path
-    for note in notes:
-        document_path = os.path.join(settings.MEDIA_ROOT, str(note.document.name))
-        
-        # Check if the document path exists
-        if os.path.exists(document_path):
-            print('yes')
-            with open(document_path, 'rb') as pdf:
-                pdf_content = pdf.read()
-            # Create the HttpResponse with PDF content
-            response = HttpResponse(pdf_content, content_type='application/pdf')
-            response['Content-Disposition'] = f'inline; filename="{os.path.basename(document_path)}"'
-            return response
-    
-    # If none of the documents are found
+def view_pdf(request, pdf_path):
+
+    pdf_path = pdf_path[5:]
+    document_path = os.path.join(settings.NOTES_ROOT, str(pdf_path))
+    if os.path.exists(document_path):
+        with open(document_path, 'rb') as pdf:
+            pdf_content = pdf.read()
+        response = HttpResponse(pdf_content, content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="{os.path.basename(document_path)}"'
+        return response
     return HttpResponse("Document not found", status=404)
 
 

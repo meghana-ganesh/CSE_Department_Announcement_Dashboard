@@ -11,6 +11,7 @@
 </head>
 {% load static %}
 <body style="background-image:url({% static 'manipal.jpg' %});font-family:Georgia">
+    <button type="submit" class="btn btn-primary" style="height:40px;position:absolute;top:10px;left:1100px"><a href="/index/" style="color:white">Home</a></button>
     <div class="container-fluid">
         <!-- Form for filtering marks -->
         <div class="d-flex" style="padding-top:10px">
@@ -44,12 +45,20 @@
             <td>Registration Number</td>
             <td>Marks</td>
             <td>Test Name</td>
+            <td></td>
+            <td></td>
             </thead>
             {% for mark in marks %}
             <tr>
                 <td>{{ mark.student_regno.username }}</td>
-                <td>{{ mark.marks }}</td>
-                <td>{{ mark.test_name }}</td>
+                <!-- <td>{{ mark.marks }} </td> -->
+                <form action="/editMarks/{{ mark.id}}{{request.path|cut:"/"}}/" method="POST">
+                    {% csrf_token %}
+                    <td><input type="text" class="form-control w-50 bg-transparent text-white border-0 shadow-none" name="marks" value="{{ mark.marks }}"></td>
+                    <td>{{ mark.test_name }}</td>
+                    <td><button type="submit" class="btn btn-primary">Update</button></td>
+                </form>
+                <td><button type="submit" class="btn btn-primary"><a href="/deleteMarks/{{ mark.id }}{{request.path|cut:"/"}}" style="color:white">Delete</a></button></td>
             </tr>
             {% endfor %}
         </table>
