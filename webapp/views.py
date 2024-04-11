@@ -136,9 +136,9 @@ def teachermarksResult(request,subject):
     # If test name is not provided, sort all records for the subject
     else:
         if sort_order == 'asc':
-            marks_query = marks_query.order_by('marks')
+            marks_query = marks_query.order_by('test_name','marks')
         elif sort_order == 'desc':
-            marks_query = marks_query.order_by('-marks')
+            marks_query = marks_query.order_by('test_name','-marks')
     unique_tests = Marks.objects.values('test_name').annotate(count=Count('test_name'))
     context =  {}
     context['unique_tests'] = unique_tests
