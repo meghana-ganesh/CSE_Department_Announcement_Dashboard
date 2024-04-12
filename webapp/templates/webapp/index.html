@@ -82,9 +82,9 @@
                     <div style="position:relative">
                         {% for note in notes %}
                         <div style="position: relative;">
-                            <a href="/view_pdf/{{ note.document | cut:"/" }}" target="_blank">{{ note.title }}<br /></a>
+                        {{ note.title }}<br />
                             <small class="text-muted" style="float:right">issued on:{{ note.date }}</small><br /><br />
-                            <button type="submit" class="btn btn-primary mr-2" ><a href="/{{ note.document.name }}" target="_blank" style="color:white">Download</a></button>
+                            <button type="submit" class="btn btn-primary mr-2" ><a href="/view_pdf/{{ note.document | cut:"/" }}" target="_blank" style="color:white">View</a></button>
                         </div>
                         <hr />
                         {% endfor %}
@@ -95,10 +95,10 @@
                     <div style="position:relative">
                         {% for note in notes %}
                         <div style="position: relative;">
-                            <a href="/view_pdf/{{ note.document | cut:"/" }}" target="_blank">{{ note.title }}<br /></a>
+                            {{ note.title }}<br />
                             <small class="text-muted" style="float:right">issued on:{{ note.date }}</small><br /><br /><br />
                             <div class="d-flex" style="position: absolute; bottom: 0; right: 0;">
-                                <button type="submit" class="btn btn-primary mr-2" ><a href="/{{ note.document.name }}" target="_blank" style="color:white">Download</a></button>
+                                <button type="submit" class="btn btn-primary mr-2" ><a href="/view_pdf/{{ note.document | cut:"/" }}" target="_blank" style="color:white">View</a></button>
                                 <button class="btn btn-dark" ><a href="/deleteNote/{{ note.id }}" style="color:white">Delete</a></button>
                             </div>
                             

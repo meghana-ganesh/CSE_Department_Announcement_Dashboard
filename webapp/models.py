@@ -10,7 +10,7 @@ class Announcements(models.Model):
     date = models.DateField()
 class Marks(models.Model):
     test_name = models.CharField(max_length=100)
-    student_regno = models.ForeignKey(User, to_field='username', on_delete=models.CASCADE)
+    student_regno = models.ForeignKey(User, to_field='username', on_delete=models.CASCADE, limit_choices_to={'user': 'student'})
     subject = models.CharField(max_length=100)
     marks = models.PositiveIntegerField(default = 0)
     date = models.DateField()
